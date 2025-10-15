@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+    
+    tools{
+        maven "MAVEN"
+    }
+
+    stages {
+	
+		stage("Checkout code"){
+			steps
+			{
+            checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: '209399e6-471a-4d82-9fa7-fac01877628f', url: 'https://git.nagarro.com/GITG00641/Java/anubhav-mishra.git']]])
+            echo 'Check Out'
+			}
+        }
+        stage('Clean') {
+            steps {
+                bat 'mvn -f Week5_assignment/Assignment_5/pom.xml clean'
+                echo 'Cleaning..'
+            }
+        }
+        stage('Compile') {
+            steps {
+                bat 'mvn -f Week5_assignment/Assignment_5/pom.xml compile'
+                echo 'Compiling..'
+            }
+        }
+        stage('Test') {
+            steps {
+                bat 'mvn -f Week5_assignment/Assignment_5/pom.xml test'
+                echo 'Testing..'
+            }
+        }
+        stage('Packaging') {
+            steps {
+                bat 'mvn -f Week5_assignment/Assignment_5/pom.xml package'
+                echo 'Packageing..'
+            }
+        }
+        stage('Install') {
+            steps {
+                bat 'mvn -f Week5_assignment/Assignment_5/pom.xml install'
+                echo 'Installing..'
+            }
+        }
+        
+      
+    }
+}
